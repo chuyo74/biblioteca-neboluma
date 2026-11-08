@@ -1,0 +1,404 @@
+/* ==========================================================================
+   1. VARIABLES GLOBALES Y PALETA DE COLORES
+   ========================================================================== */
+:root {
+    /* Paleta Principal: Tonalidades Caoba, Morado y Azul */
+    --color-caoba: #4A2E2B;
+    --color-caoba-oscuro: #321E1C;
+    --color-morado: #6B3FA0;
+    --color-azul-profundo: #1D3557;
+    --color-azul-suave: #457B9D;
+
+    /* Fondos y Neutros */
+    --color-fondo: #DDD6C9;        /* Pergamino/crema cálido */
+    --color-tarjeta: #FFFFFF;      /* Blanco limpio para tarjetas */
+    --color-texto: #2B2625;        /* Texto oscuro cálido */
+    --color-borde: #B8AC9C;        /* Crema/caoba claro */
+
+    /* Sistema de Layout y Sombras */
+    --radio-borde: 10px;
+    --sombra: 0 4px 14px rgba(74, 46, 43, 0.15);
+}
+
+/* ==========================================================================
+   2. REINICIO GENERAL (RESET) Y ESTILOS BASE
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* ==========================================================================
+   3. CABECERA Y HERO BANNER
+   ========================================================================== */
+.hero-imagen-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    border-radius: var(--radio-borde);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: var(--sombra);
+}
+
+.hero-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem;
+}
+
+.hero-overlay h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+}
+
+.hero-overlay p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* ==========================================================================
+   4. PANEL DE FILTROS Y BÚSQUEDA (FLEXBOX)
+   ========================================================================== */
+#seccion-filtros {
+    background-color: var(--color-tarjeta);
+    padding: 1.25rem;
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.grupo-filtro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Espacio destacado con ancho mínimo para la caja de búsqueda */
+.grupo-filtro-buscar {
+    flex: 2;
+    min-width: 350px;
+}
+
+.grupo-filtro label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-azul-profundo);
+}
+
+.grupo-filtro input,
+.grupo-filtro select {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--color-borde);
+    border-radius: calc(var(--radio-borde) / 2);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grupo-filtro input:focus,
+.grupo-filtro select:focus {
+    border-color: var(--color-azul-suave);
+    box-shadow: 0 0 0 3px rgba(69, 123, 157, 0.2);
+}
+
+/* ==========================================================================
+   5. GRILLA DE CONTENIDO (CSS GRID)
+   ========================================================================== */
+#seccion-libros {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ==========================================================================
+   6. TARJETAS DE LIBROS Y ESTRUCTURA 3D
+   ========================================================================== */
+.tarjeta-libro {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    perspective: 1000px;
+    cursor: pointer;
+    min-height: 300px;          /* Altura uniforme con espacio respirable */
+    contain: layout style;       /* Aislamiento del DOM para optimizar rendimiento */
+    touch-action: pan-y;         /* Garantiza scroll vertical nativo inmediato */
+}
+
+.tarjeta-interior {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    touch-action: pan-y;
+}
+
+/* Estilos comunes para ambas caras */
+.tarjeta-frente,
+.tarjeta-dorso {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--radio-borde);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--color-tarjeta);
+    border: 1px solid var(--color-borde);
+    overflow: hidden;
+    box-shadow: 
+        0 0 12px rgba(255, 255, 255, 0.8),
+        0 0 24px rgba(255, 255, 255, 0.4);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Inactivación de colisiones internas durante el movimiento */
+.tarjeta-frente,
+.tarjeta-dorso,
+.tarjeta-cuerpo,
+.ubicacion-cuadro,
+.tarjeta-pie {
+    pointer-events: none;
+}
+
+/* -- Cara Frontal -- */
+.tarjeta-frente {
+    border-top: 5px solid var(--color-caoba);
+}
+
+.tarjeta-frente h3 {
+    color: var(--color-azul-profundo);
+    font-size: 1.15rem;
+    line-height: 1.3;
+    min-height: 2.6em;          /* Reserva 2 líneas exactas */
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;      /* Recorte seguro a máximo 2 líneas */
+    line-clamp: 2;
+    overflow: hidden;
+}
+
+.autor-texto {
+    font-size: 0.9rem;
+    color: #555555;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+    min-height: 2.6em;          /* Reserva 2 líneas exactas para autores */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+}
+
+.tarjeta-frente p {
+    font-size: 0.9rem;
+    color: #555555;
+    margin-bottom: 0.3rem;
+}
+
+/* -- Cara Trasera (Sinopsis) -- */
+.tarjeta-dorso {
+    border-top: 5px solid var(--color-morado);
+    transform: rotateY(180deg);
+    overflow: hidden;           /* Evita intercepción indebida de scroll */
+    pointer-events: none;
+}
+
+.tarjeta-dorso h3 {
+    color: var(--color-morado);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* TÍTULO COMPLETO DEL LIBRO EN EL DORSO */
+.titulo-dorso {
+    color: var(--color-azul-profundo);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+    border-bottom: 1px dashed var(--color-borde); /* Línea divisoria sutil */
+    padding-bottom: 0.4rem;
+}
+
+.sinopsis-texto {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--color-texto);
+    text-align: justify;
+}
+
+/* -- Elementos Complementarios de la Tarjeta -- */
+.tarjeta-pie {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.ubicacion-cuadro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    background-color: rgba(74, 46, 43, 0.08);
+    border: 1px solid var(--color-borde);
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.78rem;
+    color: var(--color-caoba-oscuro);
+    font-weight: 600;
+    margin-top: 0.6rem;
+    width: 100%;
+}
+
+.ubicacion-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    line-height: 1.2;
+}
+
+.categoria-badge {
+    background-color: var(--color-morado);
+    color: #ffffff;
+    font-size: 0.78rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.indicador-girar {
+    font-size: 0.72rem;
+    color: var(--color-azul-suave);
+    font-weight: 600;
+    margin-top: 0.4rem;
+    align-self: center;
+    opacity: 0.85;
+}
+
+/* ==========================================================================
+   7. INTERACCIONES, ANIMACIONES Y ESTADOS (3D FLIP & HOVER)
+   ========================================================================== */
+/* Estado Volteado (Giro 3D) */
+.tarjeta-libro.volteada .tarjeta-interior {
+    transform: rotateY(180deg);
+}
+
+.tarjeta-libro.volteada .tarjeta-dorso {
+    overflow-y: auto;           /* Activa scroll de sinopsis solo al voltear */
+    pointer-events: auto;
+}
+
+/* Efectos Hover (Elevación y Luz Backlight) */
+.tarjeta-libro:hover .tarjeta-interior {
+    transform: translateY(-8px) scale(1.02);
+}
+
+.tarjeta-libro.volteada:hover .tarjeta-interior {
+    transform: rotateY(180deg) translateY(-8px) scale(1.02);
+}
+
+.tarjeta-libro:hover .tarjeta-frente,
+.tarjeta-libro:hover .tarjeta-dorso {
+    box-shadow: 
+        0 0 22px rgba(255, 255, 255, 1),
+        0 0 45px rgba(255, 255, 255, 0.8),
+        0 12px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* Control de rendimiento durante el Scroll en JS */
+body.desactivar-hover .tarjeta-libro {
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   8. FEEDBACK DE USUARIO Y CONTROLES DE PAGINACIÓN
+   ========================================================================== */
+.contenedor-contador {
+    text-align: center;
+    margin: 1rem 0 1.5rem 0;
+}
+
+.texto-contador {
+    font-size: 0.95rem;
+    color: var(--color-caoba-oscuro);
+    font-weight: 600;
+}
+
+.mensaje-vacio {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    background-color: var(--color-tarjeta);
+    border-radius: var(--radio-borde);
+    border: 1px dashed var(--color-borde);
+    color: #666666;
+}
+
+.mensaje-vacio p {
+    font-size: 1.1rem;
+}
+
+.contenedor-cargar-mas {
+    text-align: center;
+    margin: 2.5rem 0 1.5rem 0;
+}
+
+.btn-cargar {
+    background-color: var(--color-caoba);
+    color: #ffffff;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--radio-borde);
+    cursor: pointer;
+    box-shadow: var(--sombra);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-cargar:hover {
+    background-color: var(--color-caoba-oscuro);
+    transform: translateY(-2px);
+}

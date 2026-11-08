@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Nebóluma</title>
+</head>
+<body>
+    <!-- Encabezado principal de la aplicación -->
+    <header class="header-principal">
+        <div class="hero-imagen-container">
+            <img src="img/biblioteca.jpg" alt="Fotografía de mi biblioteca" class="hero-imagen">
+            <div class="hero-overlay">
+                <h1>Biblioteca Nebóluma</h1>
+                <p>Catálogo de libros</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor principal de la aplicación -->
+    <main>
+        <!-- Sección de controles de búsqueda y filtros -->
+        <section id="seccion-filtros">
+            <!-- Campo de búsqueda por texto libre -->
+            <div class="grupo-filtro grupo-filtro-buscar">
+                <label for="buscar-texto">Buscar libro:</label>
+                <input 
+                    type="text" 
+                    id="buscar-texto" 
+                    placeholder="Escriba el título o autor(a)..."
+                >
+            </div>
+
+            <!-- Selector de categorías -->
+            <div class="grupo-filtro">
+                <label for="filtrar-categoria">Categoría:</label>
+                <select id="filtrar-categoria">
+                    <option value="todas">Todas las categorías</option>
+                    <!-- Las categorías se cargarán dinámicamente con JS más adelante -->
+                </select>
+            </div>
+
+            <!-- Filtro por Idioma -->
+            <div class="grupo-filtro">
+                <label for="filtro-idioma">Idioma:</label>
+                <select id="filtro-idioma">
+                    <option value="todos">Todos los idiomas</option>
+                </select>
+            </div>
+
+            <!-- Filtro de ordenamiento -->
+            <div class="grupo-filtro">
+                <label for="filtro-orden">Ordenar por:</label>
+                <select id="filtro-orden">
+                    <option value="titulo-asc">Título (A - Z)</option>
+                    <option value="autor-asc">Autor (por Apellido A - Z)</option>
+                    <option value="ano-desc">Año (Más reciente primero)</option>
+                    <option value="ano-asc">Año (Más antiguo primero)</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Contador de resultados -->
+        <div id="contador-libros" class="contador-info"></div>
+
+        <!-- Sección donde se renderizarán las tarjetas de los libros -->
+        <section id="seccion-libros">
+            
+        </section>
+        
+        <!-- Contenedor para el botón de Carga Progresiva -->
+        <div id="contenedor-cargar-mas" class="contenedor-cargar-mas">
+            <button id="btn-cargar-mas" class="btn-cargar">Cargar más libros 📚</button>
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>&copy; 2026 Biblioteca Nebóluma</p>
+    </footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>
