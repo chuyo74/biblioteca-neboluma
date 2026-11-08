@@ -402,3 +402,40 @@ body.desactivar-hover .tarjeta-libro {
     background-color: var(--color-caoba-oscuro);
     transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   9. ADAPTACIÓN PARA DISPOSITIVOS MÓVILES (RESPONSIVE DESIGN)
+   ========================================================================== */
+@media (max-width: 600px) {
+    /* Evita el scroll horizontal general */
+    html, body {
+        overflow-x: hidden;
+        padding: 12px;
+    }
+
+    /* APILAMIENTO VERTICAL DE FILTROS EN MÓVILES */
+    #seccion-filtros {
+        padding: 1rem;
+        gap: 1rem;
+        flex-direction: column;    /* Forzamos a apilar los elementos uno debajo del otro */
+        align-items: stretch;     /* Hace que cada filtro ocupe todo el ancho disponible */
+    }
+
+    /* Reseteamos los anchos para que se adapten fluidamente a la columna */
+    .grupo-filtro,
+    .grupo-filtro-buscar {
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Grilla de libros en una sola columna */
+    #seccion-libros {
+        grid-template-columns: 1fr;
+    }
+
+    /* Tamaño de texto adaptado para la cabecera */
+    .hero-overlay h1 {
+        font-size: 1.5rem;
+    }
+}
